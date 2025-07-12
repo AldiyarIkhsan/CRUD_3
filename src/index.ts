@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 
 let dbConnected = false;
-app.use(async (req, res, next) => {
+app.use(async (_req, _res, next) => {
   if (!dbConnected) {
     await connectDB();
     dbConnected = true;
@@ -22,5 +22,4 @@ app.get("/", (_req, res) => {
   res.send("🚀 API is running");
 });
 
-// ⬅️ Экспорт функции handler через vercel-http
 export default app;
