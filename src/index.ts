@@ -3,13 +3,8 @@ import { setupBlogs } from "./blogs";
 import { setupPosts } from "./posts";
 import { connectDB } from "./db";
 
-// Создаем app один раз
 const app = express();
 app.use(express.json());
-
-// Подключаем маршруты
-setupBlogs(app);
-setupPosts(app);
 
 // Подключение к БД при первом запросе (лениво)
 let dbConnected = false;
@@ -21,5 +16,13 @@ app.use(async (req, res, next) => {
   next();
 });
 
-// Экспортируем как серверless handler для Vercel
+// Подключение маршрутов
+setupBlogs(app);
+setupPosts(app);
+
+// Корневой маршрут (для проверки работоспособности)
+app.get("/", (_req, res) => {
+  res.send("🚀 API is running");
+});
+
 export default app;
