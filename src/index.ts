@@ -1,13 +1,13 @@
-// src/index.js
-import express from "express";
-import { setupBlogs } from "./blogs";
-import { setupPosts } from "./posts";
-import { connectDB } from "./db";
+import express from 'express';
+import { setupBlogs } from './blogs';
+import { setupPosts } from './posts';
+import { connectDB } from './db';
 
 const app = express();
 app.use(express.json());
 
 let dbConnected = false;
+
 app.use(async (_req, _res, next) => {
   if (!dbConnected) {
     await connectDB();
@@ -19,8 +19,9 @@ app.use(async (_req, _res, next) => {
 setupBlogs(app);
 setupPosts(app);
 
-app.get("/", (_req, res) => {
-  res.send("🚀 API is running");
+app.get('/', (_req, res) => {
+  res.send('🚀 API is running');
 });
 
-module.exports = app;
+// Vercel-specific export
+export default app;
