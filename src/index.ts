@@ -1,3 +1,4 @@
+// src/index.js
 import express from "express";
 import { setupBlogs } from "./blogs";
 import { setupPosts } from "./posts";
@@ -22,4 +23,4 @@ app.get("/", (_req, res) => {
   res.send("🚀 API is running");
 });
 
-export default app;
+module.exports = app;
