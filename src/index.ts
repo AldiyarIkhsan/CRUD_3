@@ -3,7 +3,7 @@ import { setupBlogs } from './blogs';
 import { setupPosts } from './posts';
 import { connectDB } from './db';
 import dotenv from 'dotenv';
-dotenv.config(); // Должно быть в самом верху, до использования process.env
+dotenv.config(); 
 
 const app = express();
 app.use(express.json());
