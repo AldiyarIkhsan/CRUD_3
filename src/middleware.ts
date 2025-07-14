@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { Result, ValidationError, validationResult, check } from "express-validator";
 
 export const basicAuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  if (req.method === "GET" || req.path === "/ht_02/api/testing/all-data") {
+  if (req.method === "GET" || req.path === "/testing/all-data") {
     return next();
   }
 
@@ -43,7 +43,7 @@ export const blogValidationRules = [
     .withMessage("Name is required")
     .isLength({ max: 15 })
     .withMessage("Name should be max 15 characters"),
-    
+
   check("description")
     .trim()
     .notEmpty()
