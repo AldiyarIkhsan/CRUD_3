@@ -1,21 +1,21 @@
-import express from 'express';
-import { setupBlogs } from './blogs';
-import { setupPosts } from './posts';
-import { connectDB } from './db';
-import dotenv from 'dotenv';
-import { setupTestingRoutes } from './setupTestingRoutes';
+import express from "express";
+import { setupBlogs } from "./blogs";
+import { setupPosts } from "./posts";
+import { connectDB } from "./db";
+import dotenv from "dotenv";
+import { setupTestingRoutes } from "./setupTestingRoutes";
 
-dotenv.config(); 
+dotenv.config();
 
 const app = express();
 app.use(express.json());
 
 setupBlogs(app);
 setupPosts(app);
-setupTestingRoutes(app); 
+setupTestingRoutes(app);
 
-app.get('/', (_req, res) => {
-  res.send('🚀 API is running');
+app.get("/", (_req, res) => {
+  res.send("🚀 API is running");
 });
 
 // ✅ Оборачиваем запуск сервера в async-функцию
@@ -28,7 +28,7 @@ const start = async () => {
       console.log(`🚀 Server running on port ${PORT}`);
     });
   } catch (error) {
-    console.error('❌ Failed to start server:', error);
+    console.error("❌ Failed to start server:", error);
     process.exit(1);
   }
 };
