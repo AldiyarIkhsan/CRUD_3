@@ -3,6 +3,7 @@ import { setupBlogs } from './blogs';
 import { setupPosts } from './posts';
 import { connectDB } from './db';
 import dotenv from 'dotenv';
+import { setupTestingRoutes } from './setupTestingRoutes';
 
 dotenv.config(); 
 
@@ -11,6 +12,7 @@ app.use(express.json());
 
 setupBlogs(app);
 setupPosts(app);
+setupTestingRoutes(app); 
 
 app.get('/', (_req, res) => {
   res.send('🚀 API is running');
