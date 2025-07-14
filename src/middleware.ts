@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { Result, ValidationError, validationResult, check } from "express-validator";
 
+// In middleware.ts
 export const basicAuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  // Allow testing endpoint without auth
   if (req.method === "GET" || req.path === "/testing/all-data") {
     return next();
   }

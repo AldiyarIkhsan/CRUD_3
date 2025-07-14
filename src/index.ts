@@ -1,3 +1,4 @@
+// In index.ts
 import express from "express";
 import { setupBlogs } from "./blogs";
 import { setupPosts } from "./posts";
@@ -10,18 +11,18 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
+// Register testing routes first
+setupTestingRoutes(app);
+// Then register other routes
 setupBlogs(app);
 setupPosts(app);
-setupTestingRoutes(app);
 
 app.get("/", (_req, res) => {
   res.send("🚀 API is running");
 });
 
-// ✅ Оборачиваем запуск сервера в async-функцию
 const start = async () => {
   try {
-    console.log("📦 MONGO_URI from env:", process.env.MONGO_URI); // логируем переменную
     await connectDB();
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
