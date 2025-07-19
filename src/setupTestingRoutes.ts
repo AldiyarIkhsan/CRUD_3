@@ -4,7 +4,7 @@ import { BlogModel } from "./models/BlogModel";
 import { PostModel } from "./models/PostModel";
 
 export const setupTestingRoutes = (app: Express) => {
-  app.delete("/testing/all-data", async (_req: Request, res: Response) => {
+  app.delete("/hometask_03/api/testing/all-data", async (_req, res) => {
     try {
       await Promise.all([BlogModel.deleteMany({}), PostModel.deleteMany({})]);
       res.sendStatus(204);
