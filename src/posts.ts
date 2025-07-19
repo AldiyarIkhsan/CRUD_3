@@ -4,6 +4,29 @@ import { PostModel } from "./models/PostModel";
 import { BlogModel } from "./models/BlogModel";
 
 export const setupPosts = (app: Express) => {
+  app.get("/blogs/:id/posts", async (req: Request, res: Response) => {
+    const blogId = req.params.id;
+    const posts = await PostModel.find({ blogId });
+
+    const formatted = posts.map((post) => ({
+      id: post._id,
+      title: post.title,
+      shortDescription: post.shortDescription,
+      content: post.content,
+      blogId: post.blogId,
+      blogName: post.blogName,
+      createdAt: post.createdAt,
+    }));
+
+    res.status(200).json({
+      pagesCount: 1,
+      page: 1,
+      pageSize: formatted.length,
+      totalCount: formatted.length,
+      items: formatted,
+    });
+  });
+
   app.get("/posts", async (_req: Request, res: Response) => {
     const posts = await PostModel.find();
     res.status(200).json(
