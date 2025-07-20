@@ -10,10 +10,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// 👉 ВАЖНО: подключаем тестовый маршрут
 setupTestingRoutes(app);
-
-// 👉 Подключаем остальные маршруты
 setupBlogs(app);
 setupPosts(app);
 
