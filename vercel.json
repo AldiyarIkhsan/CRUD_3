@@ -8,11 +8,6 @@
   ],
   "routes": [
     {
-      "src": "/testing/all-data",
-      "dest": "api/testing/all-data.ts",
-      "methods": ["DELETE"]
-    },
-    {
       "src": "/(.*)",
       "dest": "src/index.ts"
     }

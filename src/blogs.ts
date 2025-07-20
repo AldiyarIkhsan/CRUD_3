@@ -1,9 +1,11 @@
-import { Express, Request, Response } from "express";
+import { Express, Router, Request, Response } from "express";
 import { blogValidationRules, handleInputErrors, basicAuthMiddleware } from "./middleware";
 import { BlogModel } from "./models/BlogModel";
 
 export const setupBlogs = (app: Express) => {
-  app.get("/blogs", async (_req: Request, res: Response) => {
+  const router = Router();
+
+  router.get("/blogs", async (_req: Request, res: Response) => {
     const blogs = await BlogModel.find();
     res.status(200).json(
       blogs.map((b) => ({
@@ -17,7 +19,7 @@ export const setupBlogs = (app: Express) => {
     );
   });
 
-  app.get("/blogs/:id", async (req: Request, res: Response) => {
+  router.get("/blogs/:id", async (req: Request, res: Response) => {
     const blog = await BlogModel.findById(req.params.id);
     if (!blog) return res.sendStatus(404);
 
@@ -31,7 +33,7 @@ export const setupBlogs = (app: Express) => {
     });
   });
 
-  app.post(
+  router.post(
     "/blogs",
     basicAuthMiddleware,
     blogValidationRules,
@@ -52,7 +54,7 @@ export const setupBlogs = (app: Express) => {
     },
   );
 
-  app.put(
+  router.put(
     "/blogs/:id",
     basicAuthMiddleware,
     blogValidationRules,
@@ -70,9 +72,11 @@ export const setupBlogs = (app: Express) => {
     },
   );
 
-  app.delete("/blogs/:id", basicAuthMiddleware, async (req: Request, res: Response) => {
+  router.delete("/blogs/:id", basicAuthMiddleware, async (req: Request, res: Response) => {
     const deleted = await BlogModel.findByIdAndDelete(req.params.id);
     if (!deleted) return res.sendStatus(404);
     res.sendStatus(204);
   });
+
+  app.use("/hometask_03/api", router);
 };

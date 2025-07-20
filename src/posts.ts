@@ -1,10 +1,12 @@
-import { Express, Request, Response } from "express";
+import { Express, Router, Request, Response } from "express";
 import { postValidationRules, handleInputErrors, basicAuthMiddleware } from "./middleware";
 import { PostModel } from "./models/PostModel";
 import { BlogModel } from "./models/BlogModel";
 
 export const setupPosts = (app: Express) => {
-  app.get("/blogs/:id/posts", async (req: Request, res: Response) => {
+  const router = Router();
+
+  router.get("/blogs/:id/posts", async (req: Request, res: Response) => {
     const blogId = req.params.id;
     const posts = await PostModel.find({ blogId });
 
@@ -27,7 +29,7 @@ export const setupPosts = (app: Express) => {
     });
   });
 
-  app.get("/posts", async (_req: Request, res: Response) => {
+  router.get("/posts", async (_req: Request, res: Response) => {
     const posts = await PostModel.find();
     res.status(200).json(
       posts.map((p) => ({
@@ -42,7 +44,7 @@ export const setupPosts = (app: Express) => {
     );
   });
 
-  app.get("/posts/:id", async (req: Request, res: Response) => {
+  router.get("/posts/:id", async (req: Request, res: Response) => {
     const post = await PostModel.findById(req.params.id);
     if (!post) return res.sendStatus(404);
 
@@ -57,7 +59,7 @@ export const setupPosts = (app: Express) => {
     });
   });
 
-  app.post(
+  router.post(
     "/posts",
     basicAuthMiddleware,
     postValidationRules,
@@ -65,7 +67,9 @@ export const setupPosts = (app: Express) => {
     async (req: Request, res: Response) => {
       const { title, shortDescription, content, blogId } = req.body;
       const blog = await BlogModel.findById(blogId);
-      if (!blog) return res.status(400).send({ errorsMessages: [{ message: "Invalid blogId", field: "blogId" }] });
+      if (!blog) {
+        return res.status(400).send({ errorsMessages: [{ message: "Invalid blogId", field: "blogId" }] });
+      }
 
       const newPost = new PostModel({
         title,
@@ -88,7 +92,7 @@ export const setupPosts = (app: Express) => {
     },
   );
 
-  app.put(
+  router.put(
     "/posts/:id",
     basicAuthMiddleware,
     postValidationRules,
@@ -96,7 +100,9 @@ export const setupPosts = (app: Express) => {
     async (req: Request, res: Response) => {
       const { title, shortDescription, content, blogId } = req.body;
       const blog = await BlogModel.findById(blogId);
-      if (!blog) return res.status(400).send({ errorsMessages: [{ message: "Invalid blogId", field: "blogId" }] });
+      if (!blog) {
+        return res.status(400).send({ errorsMessages: [{ message: "Invalid blogId", field: "blogId" }] });
+      }
 
       const updated = await PostModel.findByIdAndUpdate(
         req.params.id,
@@ -115,9 +121,11 @@ export const setupPosts = (app: Express) => {
     },
   );
 
-  app.delete("/posts/:id", basicAuthMiddleware, async (req: Request, res: Response) => {
+  router.delete("/posts/:id", basicAuthMiddleware, async (req: Request, res: Response) => {
     const deleted = await PostModel.findByIdAndDelete(req.params.id);
     if (!deleted) return res.sendStatus(404);
     res.sendStatus(204);
   });
+
+  app.use("/hometask_03/api", router);
 };
