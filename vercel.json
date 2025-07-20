@@ -1,16 +1,17 @@
 {
   "version": 2,
-  "name": "express-products-vercel",
   "builds": [
     {
       "src": "src/index.ts",
       "use": "@vercel/node"
     }
   ],
-  "env": {
-    "MONGO_URI": "@MONGO_URI"
-  },
   "routes": [
+    {
+      "src": "/testing/all-data",
+      "dest": "api/testing/all-data.ts",
+      "methods": ["DELETE"]
+    },
     {
       "src": "/(.*)",
       "dest": "src/index.ts"
